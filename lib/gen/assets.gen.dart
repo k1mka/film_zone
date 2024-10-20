@@ -9,6 +9,13 @@
 
 import 'package:flutter/widgets.dart';
 
+class $AssetsIconsGen {
+  const $AssetsIconsGen();
+
+  /// Directory path: assets/icons/svg
+  $AssetsIconsSvgGen get svg => const $AssetsIconsSvgGen();
+}
+
 class $AssetsImagesGen {
   const $AssetsImagesGen();
 
@@ -16,19 +23,34 @@ class $AssetsImagesGen {
   $AssetsImagesPngGen get png => const $AssetsImagesPngGen();
 }
 
+class $AssetsIconsSvgGen {
+  const $AssetsIconsSvgGen();
+
+  /// File path: assets/icons/svg/star_filled.svg
+  String get starFilled => 'assets/icons/svg/star_filled.svg';
+
+  /// File path: assets/icons/svg/star_unfilled.svg
+  String get starUnfilled => 'assets/icons/svg/star_unfilled.svg';
+
+  /// List of all assets
+  List<String> get values => [starFilled, starUnfilled];
+}
+
 class $AssetsImagesPngGen {
   const $AssetsImagesPngGen();
 
-  /// File path: assets/images/png/cat.png
-  AssetGenImage get cat => const AssetGenImage('assets/images/png/cat.png');
+  /// File path: assets/images/png/empty_state.png
+  AssetGenImage get emptyState =>
+      const AssetGenImage('assets/images/png/empty_state.png');
 
   /// List of all assets
-  List<AssetGenImage> get values => [cat];
+  List<AssetGenImage> get values => [emptyState];
 }
 
 class Assets {
   Assets._();
 
+  static const $AssetsIconsGen icons = $AssetsIconsGen();
   static const $AssetsImagesGen images = $AssetsImagesGen();
 }
 
