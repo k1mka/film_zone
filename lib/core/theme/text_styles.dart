@@ -21,7 +21,7 @@ abstract class TextStyles {
       );
 
   static TextStyle get initialStyle => const TextStyle(
-        fontSize: 14,
+        fontSize: 16,
         color: Palette.blurTextColor,
         fontWeight: FontWeight.w400,
       );

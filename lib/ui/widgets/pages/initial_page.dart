@@ -8,9 +8,9 @@ class InitialPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-        padding: Tokens.padding4,
+        padding: Tokens.padding20,
         child: Text(
-          context.s.please_enter_something,
+          context.s.to_start_searching,
           style: TextStyles.initialStyle,
         ),
       );

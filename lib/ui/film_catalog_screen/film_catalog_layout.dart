@@ -24,7 +24,9 @@ class FilmCatalogLayout extends StatelessWidget {
           child: Column(
             children: [
               Tokens.spacer24,
-              InputFieldWidget(onChanged: (query) => _handleSearch(query, context)),
+              InputFieldWidget(
+                onChanged: (query) => _handleSearch(query, context),
+              ),
               Expanded(
                 child: BlocBuilder<FilmCatalogBloc, FilmCatalogState>(
                   builder: (context, state) {

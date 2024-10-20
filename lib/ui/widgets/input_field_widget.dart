@@ -5,7 +5,10 @@ import 'package:film_zone/ui/widgets/tokens/tokens.dart';
 import 'package:flutter/material.dart';
 
 class InputFieldWidget extends StatelessWidget {
-  const InputFieldWidget({super.key, required this.onChanged});
+  const InputFieldWidget({
+    super.key,
+    required this.onChanged,
+  });
 
   final ValueChanged<String> onChanged;
 
@@ -16,7 +19,7 @@ class InputFieldWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: Tokens.paddingH16,
-      child: TextField(
+      child: TextFormField(
         cursorColor: Palette.white,
         style: TextStyles.inputTextStyle,
         onChanged: onChanged,
