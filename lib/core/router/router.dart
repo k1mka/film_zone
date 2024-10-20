@@ -1,4 +1,6 @@
-import 'package:film_zone/ui/film_Info_page/film_Info_screen.dart';
+import 'dart:convert';
+import 'package:film_zone/data/models/film_model.dart';
+import 'package:film_zone/ui/film_Info_screen/film_Info_screen.dart';
 import 'package:film_zone/ui/film_catalog_screen/film_catalog_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -16,8 +18,12 @@ final GoRouter goRouter = GoRouter(
       routes: [
         GoRoute(
           name: FilmInfoScreen.routeName,
-          path: FilmInfoScreen.routeName,
-          builder: (__, _) => const FilmInfoScreen(),
+          path: '${FilmInfoScreen.routeName}/:${FilmInfoScreen.param}',
+          builder: (__, state) {
+            final filmJson = state.pathParameters[FilmInfoScreen.param]!;
+            final filmModel = FilmModel.fromJson(jsonDecode(filmJson));
+            return FilmInfoScreen(filmModel: filmModel);
+          },
         ),
       ],
     ),
