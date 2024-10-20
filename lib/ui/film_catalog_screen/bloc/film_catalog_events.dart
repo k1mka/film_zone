@@ -1,3 +1,7 @@
 sealed class FilmCatalogEvent {}
 
-class InitialCatalogEvent extends FilmCatalogEvent {}
+class SearchCatalogEvent extends FilmCatalogEvent {
+  SearchCatalogEvent(this.query);
+
+  final String query;
+}

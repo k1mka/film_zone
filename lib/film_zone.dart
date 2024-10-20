@@ -21,7 +21,7 @@ class FilmZone extends StatelessWidget {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      theme: ThemeData(scaffoldBackgroundColor: Palette.white),
+      theme: ThemeData(scaffoldBackgroundColor: Palette.black),
       builder: (context, router) => AppRouterHolder(
         router: getRouter,
         child: CompositeLoggerHolder(
