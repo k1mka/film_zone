@@ -8,8 +8,10 @@ class InputFieldWidget extends StatelessWidget {
   const InputFieldWidget({
     super.key,
     required this.onChanged,
+    required this.controller,
   });
 
+  final TextEditingController controller;
   final ValueChanged<String> onChanged;
 
   static const _filled = true;
@@ -20,6 +22,7 @@ class InputFieldWidget extends StatelessWidget {
     return Padding(
       padding: Tokens.paddingH16,
       child: TextFormField(
+        controller: controller,
         cursorColor: Palette.white,
         style: TextStyles.inputTextStyle,
         onChanged: onChanged,
