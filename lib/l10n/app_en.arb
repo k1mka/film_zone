@@ -1,5 +1,7 @@
 {
   "hello_world": "Hello World",
   "film_info_screen": "Film Info Screen",
-  "film_catalog_screen": "Film Catalog Screen"
+  "film_catalog_screen": "Film Catalog Screen",
+  "search": "Search...",
+  "film_catalog": "Film Catalog"
 }

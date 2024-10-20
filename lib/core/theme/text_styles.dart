@@ -10,9 +10,15 @@ extension CustomTextStyleExtension on TextStyle {
 }
 
 abstract class TextStyles {
-  static TextStyle get logoStyle => const TextStyle(
-        fontSize: 32,
+  static TextStyle get filmTitleStyle => const TextStyle(
+        fontSize: 18,
         color: Palette.blurTextColor,
-        fontWeight: FontWeight.w900,
+        fontWeight: FontWeight.w400,
       );
+
+  static TextStyle get filmCatalogStyle => const TextStyle(
+    fontSize: 22,
+    color: Palette.blurTextColor,
+    fontWeight: FontWeight.w400,
+  );
 }

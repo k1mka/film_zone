@@ -49,6 +49,14 @@ dependencies:
   dio: ^5.7.0
   # https://pub.dev/packages/sqflite
   sqflite: ^2.3.2
+  # https://pub.dev/packages/rxdart
+  rxdart: ^0.27.0
+  # https://pub.dev/packages/freezed
+  freezed: ^2.5.2
+  # https://pub.dev/packages/freezed_annotation
+  freezed_annotation: ^2.2.0
+  # https://pub.dev/packages/json_serializable
+  json_serializable: ^6.6.1
 
 
 dev_dependencies:
