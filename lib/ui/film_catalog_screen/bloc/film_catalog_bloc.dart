@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:film_zone/data/models/film_model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:film_zone/domain/repository.dart';
 import 'package:film_zone/ui/film_catalog_screen/bloc/film_catalog_events.dart';
@@ -47,9 +48,18 @@ class FilmCatalogBloc extends Bloc<FilmCatalogEvent, FilmCatalogState> {
     Emitter<FilmCatalogState> emit,
   ) async {
     final cachedResults = await repository.getCachedFilms();
+
     if (cachedResults.isNotEmpty) {
-      emit(LoadedCachedState(cachedResults));
+      final limitedResults = _limitResults(cachedResults);
+      emit(LoadedCachedState(limitedResults));
     }
+  }
+
+  List<FilmModel> _limitResults(List<FilmModel> results) {
+    const min = 0;
+    const max = 100;
+
+    return results.length > max ? results.sublist(min, max) : results;
   }
 
   EventTransformer<T> debounce<T>(Duration duration) =>
