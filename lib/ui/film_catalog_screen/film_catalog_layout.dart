@@ -20,12 +20,12 @@ class FilmCatalogLayout extends HookWidget {
     int currentPage = 1,
   }) {
     context.read<FilmCatalogBloc>().add(
-      SearchCatalogEvent(
-        query: query,
-        currentPage: currentPage,
-        currentFilms: currentFilms,
-      ),
-    );
+          SearchCatalogEvent(
+            query: query,
+            currentPage: currentPage,
+            currentFilms: currentFilms,
+          ),
+        );
   }
 
   @override
@@ -33,6 +33,11 @@ class FilmCatalogLayout extends HookWidget {
     final films = useState<List<FilmModel>>([]);
     final controller = useTextEditingController();
     final scrollController = useScrollController();
+
+    useEffect(() {
+      context.read<FilmCatalogBloc>().add(LoadCachedCatalogEvent());
+      return null;
+    }, []);
 
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
@@ -56,24 +61,39 @@ class FilmCatalogLayout extends HookWidget {
                   if (state is LoadedCatalogState) {
                     films.value = state.films;
                   }
+                  if (state is LoadedCachedState) {
+                    films.value = state.films;
+                  }
                 },
                 builder: (context, state) {
                   return Expanded(
                     child: switch (state) {
                       InitialCatalogState() => const InitialPage(),
                       ErrorCatalogState() => Text(state.exception.toString()),
+                      LoadedCachedState() => LoadedCatalogPage(
+                          films: films.value,
+                          scrollController: scrollController,
+                          onScrollEnd: (currentPage) {
+                            _handleSearch(
+                              query: controller.text,
+                              currentFilms: films.value,
+                              context: context,
+                              currentPage: currentPage,
+                            );
+                          },
+                        ),
                       LoadedCatalogState() => LoadedCatalogPage(
-                        films: films.value,
-                        scrollController: scrollController,
-                        onScrollEnd: (currentPage) {
-                          _handleSearch(
-                            query: controller.text,
-                            currentFilms: films.value,
-                            context: context,
-                            currentPage: currentPage,
-                          );
-                        },
-                      ),
+                          films: films.value,
+                          scrollController: scrollController,
+                          onScrollEnd: (currentPage) {
+                            _handleSearch(
+                              query: controller.text,
+                              currentFilms: films.value,
+                              context: context,
+                              currentPage: currentPage,
+                            );
+                          },
+                        ),
                     },
                   );
                 },

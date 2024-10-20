@@ -13,6 +13,10 @@ class FilmCatalogBloc extends Bloc<FilmCatalogEvent, FilmCatalogState> {
       _onSearchEvent,
       transformer: debounce(debounceDuration),
     );
+
+    on<LoadCachedCatalogEvent>(_onLoadCachedCatalogEvent);
+
+    add(LoadCachedCatalogEvent());
   }
 
   final Repository repository;
@@ -32,8 +36,19 @@ class FilmCatalogBloc extends Bloc<FilmCatalogEvent, FilmCatalogState> {
       );
 
       emit(LoadedCatalogState(results));
+      await repository.saveFilms(results);
     } catch (error) {
       emit(ErrorCatalogState(error));
+    }
+  }
+
+  Future<void> _onLoadCachedCatalogEvent(
+    LoadCachedCatalogEvent event,
+    Emitter<FilmCatalogState> emit,
+  ) async {
+    final cachedResults = await repository.getCachedFilms();
+    if (cachedResults.isNotEmpty) {
+      emit(LoadedCachedState(cachedResults));
     }
   }
 

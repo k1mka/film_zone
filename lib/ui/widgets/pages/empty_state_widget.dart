@@ -1,6 +1,5 @@
 import 'package:film_zone/data/models/film_model.dart';
 import 'package:film_zone/ui/widgets/film_grid_view.dart';
-import 'package:film_zone/ui/widgets/no_data_widget.dart';
 import 'package:flutter/material.dart';
 
 class LoadedCatalogPage extends StatelessWidget {
@@ -20,9 +19,6 @@ class LoadedCatalogPage extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        if (films.isEmpty)
-          const EmptyStateWidget()
-        else
           Expanded(
             child: FilmGridView(
               films: films,

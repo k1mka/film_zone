@@ -6,4 +6,10 @@ abstract interface class Repository {
     required List<FilmModel> currentFilms,
     required int currentPage,
   });
+
+  Future<void> saveFilms(List<FilmModel> films);
+
+  Future<List<FilmModel>> getCachedFilms();
+
+  Future<void> clearFilms();
 }

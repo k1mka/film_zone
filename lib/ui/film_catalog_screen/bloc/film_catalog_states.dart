@@ -10,6 +10,12 @@ class LoadedCatalogState extends FilmCatalogState {
   final List<FilmModel> films;
 }
 
+class LoadedCachedState extends FilmCatalogState {
+  LoadedCachedState(this.films);
+
+  final List<FilmModel> films;
+}
+
 class ErrorCatalogState extends FilmCatalogState {
   ErrorCatalogState(this.exception);
 

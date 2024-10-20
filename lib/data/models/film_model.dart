@@ -8,9 +8,7 @@ part 'film_model.g.dart';
 @freezed
 class FilmModel with _$FilmModel {
   const factory FilmModel({
-    required bool adult,
     String? backdropPath,
-    required List<int>? genreIds,
     required int id,
     required String originalLanguage,
     required String originalTitle,
@@ -19,7 +17,6 @@ class FilmModel with _$FilmModel {
     String? posterPath,
     required String releaseDate,
     required String title,
-    required bool video,
     required double voteAverage,
     required int voteCount,
   }) = _FilmModel;

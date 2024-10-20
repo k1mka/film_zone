@@ -23,12 +23,9 @@ class FilmGridView extends HookWidget {
 
   static const _initialPage = 1;
   static const _crossAxisCount = 2;
-  static const _scrollMin = 0.0;
   static const _childAspectRatio = 0.7;
   static const _crossAxisSpacing = 8.0;
   static const _mainAxisSpacing = 8.0;
-
-  static const _animationDuration = Duration(milliseconds: 200);
 
   @override
   Widget build(BuildContext context) {

@@ -1,12 +1,14 @@
 import 'package:film_zone/core/env.dart';
 import 'package:film_zone/core/templates/typedefs.dart';
+import 'package:film_zone/data/datasources/locale/local_storage.dart';
 import 'package:film_zone/data/datasources/remote/network_service/network_service.dart';
 import 'package:film_zone/data/models/film_model.dart';
 import 'package:film_zone/domain/repository.dart';
 
 class RepositoryImpl implements Repository {
-  RepositoryImpl(this.networkService);
+  RepositoryImpl(this.networkService, this.localStorage);
 
+  final LocalStorage localStorage;
   final NetworkService networkService;
 
   static const String _searchEndpoint = '/search/movie';
@@ -15,6 +17,15 @@ class RepositoryImpl implements Repository {
   static const _queryKey = 'query';
   static const _resultsKey = 'results';
   static const _pageKey = 'page';
+
+  @override
+  Future<void> saveFilms(List<FilmModel> films) => localStorage.saveFilms(films);
+
+  @override
+  Future<List<FilmModel>> getCachedFilms() => localStorage.getCachedFilms();
+
+  @override
+  Future<void> clearFilms() => localStorage.clearFilms();
 
   @override
   Future<List<FilmModel>> searchFilms({

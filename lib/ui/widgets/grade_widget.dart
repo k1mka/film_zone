@@ -1,5 +1,4 @@
 import 'package:film_zone/gen/assets.gen.dart';
-import 'package:film_zone/ui/widgets/tokens/tokens.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 

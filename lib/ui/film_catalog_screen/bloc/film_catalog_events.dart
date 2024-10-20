@@ -13,3 +13,5 @@ class SearchCatalogEvent extends FilmCatalogEvent {
   final int currentPage;
   final List<FilmModel> currentFilms;
 }
+
+class LoadCachedCatalogEvent extends FilmCatalogEvent {}
