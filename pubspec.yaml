@@ -57,6 +57,10 @@ dependencies:
   freezed_annotation: ^2.2.0
   # https://pub.dev/packages/json_serializable
   json_serializable: ^6.6.1
+  # https://pub.dev/packages/flutter_svg
+  flutter_svg: ^2.0.10+1
+  # https://pub.dev/packages/flutter_hooks
+  flutter_hooks: ^0.20.5
 
 
 dev_dependencies:
