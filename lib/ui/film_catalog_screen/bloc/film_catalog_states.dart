@@ -1,19 +1,21 @@
-import 'package:film_zone/data/models/film_model.dart';
+import 'package:film_zone/data/models/page_model.dart';
 
 sealed class FilmCatalogState {}
 
 class InitialCatalogState extends FilmCatalogState {}
 
-class LoadedCatalogState extends FilmCatalogState {
-  LoadedCatalogState(this.films);
+class LoadingCatalogState extends FilmCatalogState {}
 
-  final List<FilmModel> films;
+class LoadedCatalogState extends FilmCatalogState {
+  LoadedCatalogState(this.page);
+
+  final PageModel page;
 }
 
 class LoadedCachedState extends FilmCatalogState {
-  LoadedCachedState(this.films);
+  LoadedCachedState(this.page);
 
-  final List<FilmModel> films;
+  final PageModel page;
 }
 
 class ErrorCatalogState extends FilmCatalogState {

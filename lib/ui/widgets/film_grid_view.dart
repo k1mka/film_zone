@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:film_zone/core/templates/context_extensions.dart';
 import 'package:film_zone/core/theme/palette.dart';
 import 'package:film_zone/core/theme/text_styles.dart';
-import 'package:film_zone/data/models/film_model.dart';
+import 'package:film_zone/data/models/page_model.dart';
 import 'package:film_zone/ui/film_Info_screen/film_Info_screen.dart';
 import 'package:film_zone/ui/widgets/card_film_widget.dart';
 import 'package:film_zone/ui/widgets/tokens/tokens.dart';
@@ -12,12 +12,14 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 class FilmGridView extends HookWidget {
   const FilmGridView({
     super.key,
-    required this.films,
+    required this.page,
     required this.onPageChanged,
     required this.scrollController,
+    required this.searchQuery,
   });
 
-  final List<FilmModel> films;
+  final PageModel page;
+  final String searchQuery;
   final ScrollController scrollController;
   final ValueChanged<int> onPageChanged;
 
@@ -29,26 +31,31 @@ class FilmGridView extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final page = useState<int>(1);
     final scrollController = useScrollController();
+
+    final films = page.films;
+
+    final filteredFilms = films.where((film) {
+      return film.title.toLowerCase().contains(searchQuery.toLowerCase());
+    }).toList();
 
     useEffect(() {
       void onScroll() {
-        if (scrollController.position.pixels >= scrollController.position.maxScrollExtent) {
-          page.value += _initialPage;
-          onPageChanged(page.value);
+        if (scrollController.position.pixels >= scrollController.position.maxScrollExtent &&
+            page.currentPage < page.totalPages) {
+          final nextPage = page.currentPage + 1;
+          onPageChanged(nextPage);
         }
       }
 
       scrollController.addListener(onScroll);
-
       return () => scrollController.removeListener(onScroll);
-    }, [scrollController, page]);
+    }, [scrollController]); // Убрали page.currentPage из зависимостей
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (films.isNotEmpty)
+        if (filteredFilms.isNotEmpty)
           Padding(
             padding: Tokens.padding12,
             child: Text(
@@ -66,16 +73,19 @@ class FilmGridView extends HookWidget {
               mainAxisSpacing: _mainAxisSpacing,
             ),
             padding: Tokens.padding8,
-            itemCount: films.length,
-            itemBuilder: (context, index) => GestureDetector(
-              onTap: () => context.r.push(
-                FilmInfoScreen.routeName,
-                pathParameters: {
-                  FilmInfoScreen.param: jsonEncode(films[index].toJson()),
-                },
-              ),
-              child: CardFilmWidget(filmModel: films[index]),
-            ),
+            itemCount: filteredFilms.length,
+            itemBuilder: (context, index) {
+              final film = filteredFilms[index];
+              return GestureDetector(
+                onTap: () => context.r.push(
+                  FilmInfoScreen.routeName,
+                  pathParameters: {
+                    FilmInfoScreen.param: jsonEncode(film.toJson()),
+                  },
+                ),
+                child: CardFilmWidget(filmModel: film),
+              );
+            },
           ),
         ),
       ],

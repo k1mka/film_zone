@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:film_zone/data/models/film_model.dart';
+import 'package:film_zone/data/models/page_model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:film_zone/domain/repository.dart';
 import 'package:film_zone/ui/film_catalog_screen/bloc/film_catalog_events.dart';
@@ -29,6 +30,7 @@ class FilmCatalogBloc extends Bloc<FilmCatalogEvent, FilmCatalogState> {
     if (event.query.length < 2) {
       return;
     }
+    emit(LoadingCatalogState());
     try {
       final results = await repository.searchFilms(
         query: event.query,
@@ -37,7 +39,7 @@ class FilmCatalogBloc extends Bloc<FilmCatalogEvent, FilmCatalogState> {
       );
 
       emit(LoadedCatalogState(results));
-      await repository.saveFilms(results);
+      await repository.saveFilms(results.films);
     } catch (error) {
       emit(ErrorCatalogState(error));
     }
@@ -47,19 +49,32 @@ class FilmCatalogBloc extends Bloc<FilmCatalogEvent, FilmCatalogState> {
     LoadCachedCatalogEvent event,
     Emitter<FilmCatalogState> emit,
   ) async {
+    const defaultV = 1;
     final cachedResults = await repository.getCachedFilms();
 
     if (cachedResults.isNotEmpty) {
       final limitedResults = _limitResults(cachedResults);
-      emit(LoadedCachedState(limitedResults));
+      emit(
+        LoadedCachedState(
+          PageModel(
+            totalPages: defaultV,
+            currentPage: defaultV,
+            films: [...limitedResults],
+          ),
+        ),
+      );
     }
   }
 
+  // TODO(George): get last 100 films
   List<FilmModel> _limitResults(List<FilmModel> results) {
-    const min = 0;
     const max = 100;
 
-    return results.length > max ? results.sublist(min, max) : results;
+    if (results.length <= max) {
+      return results;
+    } else {
+      return results.sublist(results.length - max);
+    }
   }
 
   EventTransformer<T> debounce<T>(Duration duration) =>

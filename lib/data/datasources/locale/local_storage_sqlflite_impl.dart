@@ -49,10 +49,17 @@ class LocalStorageSQLFliteImpl implements LocalStorage {
 
   @override
   Future<void> saveFilms(List<FilmModel> films) async {
-    final db = await database;
-    await db.delete('films');
-    for (var film in films) {
-      await db.insert('films', _filmToMap(film));
+    try {
+      final db = await database;
+      for (var film in films) {
+        await db.insert(
+          'films',
+          _filmToMap(film),
+          conflictAlgorithm: ConflictAlgorithm.replace,
+        );
+      }
+    } catch (error) {
+      rethrow;
     }
   }
 

@@ -3,6 +3,7 @@ import 'package:film_zone/core/templates/typedefs.dart';
 import 'package:film_zone/data/datasources/locale/local_storage.dart';
 import 'package:film_zone/data/datasources/remote/network_service/network_service.dart';
 import 'package:film_zone/data/models/film_model.dart';
+import 'package:film_zone/data/models/page_model.dart';
 import 'package:film_zone/domain/repository.dart';
 
 class RepositoryImpl implements Repository {
@@ -17,6 +18,7 @@ class RepositoryImpl implements Repository {
   static const _queryKey = 'query';
   static const _resultsKey = 'results';
   static const _pageKey = 'page';
+  static const _totalPagesKey = 'total_pages';
 
   @override
   Future<void> saveFilms(List<FilmModel> films) => localStorage.saveFilms(films);
@@ -28,22 +30,31 @@ class RepositoryImpl implements Repository {
   Future<void> clearFilms() => localStorage.clearFilms();
 
   @override
-  Future<List<FilmModel>> searchFilms({
+  Future<PageModel> searchFilms({
     required String query,
     required List<FilmModel> currentFilms,
     required int currentPage,
   }) async {
     try {
-      final newFilms = await _getCatalog(query, currentPage);
-      final updatedFilms = [...currentFilms, ...newFilms];
+      final newCatalogs = await _getCatalog(query, currentPage);
 
-      return updatedFilms;
+      if (newCatalogs.films.isNotEmpty) {
+        final combinedFilms = [...currentFilms, ...newCatalogs.films];
+
+        return PageModel(
+          films: combinedFilms,
+          totalPages: newCatalogs.totalPages,
+          currentPage: newCatalogs.currentPage,
+        );
+      } else {
+        return PageModel.empty();
+      }
     } catch (error) {
       rethrow;
     }
   }
 
-  Future<List<FilmModel>> _getCatalog(String query, int currentPage) async {
+  Future<PageModel> _getCatalog(String query, int currentPage) async {
     try {
       final result = await networkService.get(
         url: '${Env.baseUrl}$_searchEndpoint',
@@ -54,11 +65,14 @@ class RepositoryImpl implements Repository {
         headers: {_authKey: '$_tokenTypeKey ${Env.apiKey}'},
       );
 
-      final catalog = (result.data[_resultsKey] as List)
+      final totalPages = result.data[_totalPagesKey];
+      final resultPage = result.data[_pageKey];
+
+      final films = (result.data[_resultsKey] as List)
           .map<FilmModel>((film) => FilmModel.fromJson(film as JsonMap))
           .toList();
 
-      return catalog;
+      return PageModel(totalPages: totalPages, films: films, currentPage: resultPage);
     } catch (error) {
       rethrow;
     }

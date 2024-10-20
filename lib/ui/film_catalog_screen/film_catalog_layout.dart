@@ -1,7 +1,9 @@
 import 'package:film_zone/data/models/film_model.dart';
+import 'package:film_zone/data/models/page_model.dart';
 import 'package:film_zone/ui/film_catalog_screen/bloc/film_catalog_bloc.dart';
 import 'package:film_zone/ui/film_catalog_screen/bloc/film_catalog_events.dart';
 import 'package:film_zone/ui/film_catalog_screen/bloc/film_catalog_states.dart';
+import 'package:film_zone/ui/widgets/custom_progress.dart';
 import 'package:film_zone/ui/widgets/input_field_widget.dart';
 import 'package:film_zone/ui/widgets/pages/empty_state_widget.dart';
 import 'package:film_zone/ui/widgets/pages/initial_page.dart';
@@ -30,7 +32,7 @@ class FilmCatalogLayout extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final films = useState<List<FilmModel>>([]);
+    final page = useState<PageModel>(PageModel.empty());
     final controller = useTextEditingController();
     final scrollController = useScrollController();
 
@@ -52,43 +54,33 @@ class FilmCatalogLayout extends HookWidget {
                   _handleSearch(
                     query: query,
                     context: context,
-                    currentFilms: films.value,
+                    currentFilms: page.value.films,
                   );
                 },
               ),
               BlocConsumer<FilmCatalogBloc, FilmCatalogState>(
                 listener: (context, state) {
                   if (state is LoadedCatalogState) {
-                    films.value = state.films;
+                    page.value = state.page;
                   }
                   if (state is LoadedCachedState) {
-                    films.value = state.films;
+                    page.value = state.page;
                   }
                 },
                 builder: (context, state) {
                   return Expanded(
                     child: switch (state) {
+                      LoadingCatalogState() => const CustomProgress(),
                       InitialCatalogState() => const InitialPage(),
                       ErrorCatalogState() => Text(state.exception.toString()),
-                      LoadedCachedState() => LoadedCatalogPage(
-                          films: films.value,
+                      LoadedCachedState() || LoadedCatalogState() => LoadedCatalogPage(
+                          page: page.value,
+                          searchQuery: controller.text,
                           scrollController: scrollController,
                           onScrollEnd: (currentPage) {
                             _handleSearch(
                               query: controller.text,
-                              currentFilms: films.value,
-                              context: context,
-                              currentPage: currentPage,
-                            );
-                          },
-                        ),
-                      LoadedCatalogState() => LoadedCatalogPage(
-                          films: films.value,
-                          scrollController: scrollController,
-                          onScrollEnd: (currentPage) {
-                            _handleSearch(
-                              query: controller.text,
-                              currentFilms: films.value,
+                              currentFilms: page.value.films,
                               context: context,
                               currentPage: currentPage,
                             );

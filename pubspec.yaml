@@ -63,6 +63,8 @@ dependencies:
   flutter_hooks: ^0.20.5
   # https://pub.dev/packages/path_provider
   path_provider: ^2.1.4
+  # https://pub.dev/packages/path
+  path: ^1.8.3
 
 
 
