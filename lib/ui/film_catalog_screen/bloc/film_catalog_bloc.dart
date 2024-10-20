@@ -30,7 +30,6 @@ class FilmCatalogBloc extends Bloc<FilmCatalogEvent, FilmCatalogState> {
     if (event.query.length < 2) {
       return;
     }
-    emit(LoadingCatalogState());
     try {
       final results = await repository.searchFilms(
         query: event.query,

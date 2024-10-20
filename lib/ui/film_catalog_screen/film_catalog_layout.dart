@@ -70,7 +70,6 @@ class FilmCatalogLayout extends HookWidget {
                 builder: (context, state) {
                   return Expanded(
                     child: switch (state) {
-                      LoadingCatalogState() => const CustomProgress(),
                       InitialCatalogState() => const InitialPage(),
                       ErrorCatalogState() => Text(state.exception.toString()),
                       LoadedCachedState() || LoadedCatalogState() => LoadedCatalogPage(

@@ -4,8 +4,6 @@ sealed class FilmCatalogState {}
 
 class InitialCatalogState extends FilmCatalogState {}
 
-class LoadingCatalogState extends FilmCatalogState {}
-
 class LoadedCatalogState extends FilmCatalogState {
   LoadedCatalogState(this.page);
 
