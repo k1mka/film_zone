@@ -17,14 +17,20 @@ class FilmCatalogBloc extends Bloc<FilmCatalogEvent, FilmCatalogState> {
 
   final Repository repository;
 
-  Future<void> _onSearchEvent(SearchCatalogEvent event, Emitter<FilmCatalogState> emit) async {
+  Future<void> _onSearchEvent(
+    SearchCatalogEvent event,
+    Emitter<FilmCatalogState> emit,
+  ) async {
     if (event.query.length < 2) {
       return;
     }
-
     try {
-      emit(LoadingCatalogState());
-      final results = await repository.searchFilms(event.query);
+      final results = await repository.searchFilms(
+        query: event.query,
+        currentFilms: event.currentFilms,
+        currentPage: event.currentPage,
+      );
+
       emit(LoadedCatalogState(results));
     } catch (error) {
       emit(ErrorCatalogState(error));
