@@ -44,3 +44,7 @@ app.*.map.json
 
 # FVM Version Cache
 .fvm/
+/lib/data/models/film_model.freezed.dart
+/lib/data/models/film_model.g.dart
+/lib/data/models/page_model.freezed.dart
+/lib/data/models/page_model.g.dart

@@ -1,0 +1,11 @@
+{
+  "hello_world": "Hello World",
+  "film_info_screen": "Film Info Screen",
+  "film_catalog_screen": "Film Catalog Screen",
+  "search": "Search...",
+  "film_catalog": "Film Catalog",
+  "show_less": "Show less",
+  "show_more": "Show more",
+  "to_start_searching": "To start the search, you need to enter at least two characters.",
+  "data_not_found_please_check_your_request_or_try_searching_for_something_else": "Data not found. Please check your request or try searching for something else."
+}
