@@ -67,13 +67,7 @@ class FilmCatalogBloc extends Bloc<FilmCatalogEvent, FilmCatalogState> {
 
   // TODO(George): get last 100 films
   List<FilmModel> _limitResults(List<FilmModel> results) {
-    const max = 100;
-
-    if (results.length <= max) {
-      return results;
-    } else {
-      return results.sublist(results.length - max);
-    }
+    return results;
   }
 
   EventTransformer<T> debounce<T>(Duration duration) =>

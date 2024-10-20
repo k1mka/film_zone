@@ -23,7 +23,6 @@ class FilmGridView extends HookWidget {
   final ScrollController scrollController;
   final ValueChanged<int> onPageChanged;
 
-  static const _initialPage = 1;
   static const _crossAxisCount = 2;
   static const _childAspectRatio = 0.7;
   static const _crossAxisSpacing = 8.0;
@@ -31,13 +30,14 @@ class FilmGridView extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final scrollController = useScrollController();
-
     final films = page.films;
 
+    // Используем Set для удаления дубликатов по заголовкам фильмов
     final filteredFilms = films.where((film) {
       return film.title.toLowerCase().contains(searchQuery.toLowerCase());
     }).toList();
+
+    final uniqueFilms = filteredFilms.toSet().toList();
 
     useEffect(() {
       void onScroll() {
@@ -50,12 +50,12 @@ class FilmGridView extends HookWidget {
 
       scrollController.addListener(onScroll);
       return () => scrollController.removeListener(onScroll);
-    }, [scrollController]); // Убрали page.currentPage из зависимостей
+    }, [scrollController]);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (filteredFilms.isNotEmpty)
+        if (uniqueFilms.isNotEmpty)
           Padding(
             padding: Tokens.padding12,
             child: Text(
@@ -73,9 +73,9 @@ class FilmGridView extends HookWidget {
               mainAxisSpacing: _mainAxisSpacing,
             ),
             padding: Tokens.padding8,
-            itemCount: filteredFilms.length,
+            itemCount: uniqueFilms.length,
             itemBuilder: (context, index) {
-              final film = filteredFilms[index];
+              final film = uniqueFilms[index];
               return GestureDetector(
                 onTap: () => context.r.push(
                   FilmInfoScreen.routeName,
