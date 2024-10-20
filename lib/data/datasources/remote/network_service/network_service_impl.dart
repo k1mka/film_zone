@@ -26,14 +26,17 @@ class DioNetworkServiceImpl implements NetworkService {
   }
 
   @override
-  Future<Response<T>> get<T>(
-    String url, {
-    required HeaderMap headers,
+  Future<Response<T>> get<T>({
+    required String url,
+    JsonMap? queryParameters,
+    StringMap? headers,
+    ResponseType? responseType,
   }) {
     try {
       final result = _dio.get<T>(
         url,
-        options: Options(headers: headers),
+        queryParameters: queryParameters,
+        options: Options(headers: headers, responseType: responseType),
       );
       return result;
     } catch (error) {

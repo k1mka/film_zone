@@ -4,9 +4,11 @@ import 'package:film_zone/core/templates/typedefs.dart';
 typedef HeaderMap = StringMap;
 
 abstract interface class NetworkService {
-  Future<Response<T>> get<T>(
-    String url, {
-    required HeaderMap headers,
+  Future<Response<T>> get<T>({
+    required String url,
+    StringMap? headers,
+    JsonMap? queryParameters,
+    ResponseType? responseType,
   });
 
   Future<Response<T>> post<T>(
